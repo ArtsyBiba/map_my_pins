@@ -8,7 +8,6 @@ const findOrCreateUser = async token => {
         throw new AuthenticationError("No auth token provided");
     }
     const googleUser = await verifyGoogleToken(token);
-    console.log({ googleUser });
     const user = await checkIfUserExists(googleUser.email);
     return user ? user : saveUser(googleUser);
 };
@@ -27,7 +26,6 @@ const verifyGoogleToken = async token => {
             idToken: token,
             audience: process.env.OAUTH_CLIENT_ID
         });
-        console.log({ ticket });
         return ticket.getPayload();
     } catch (err) {
         throw new Error("Error verifying Google Token", err);
