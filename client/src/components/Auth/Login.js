@@ -18,6 +18,8 @@ const Login = ({ classes }) => {
       })
       const { me } = await client.request(ME_QUERY)
       dispatch({ type: "LOGIN_USER", payload: me })
+      dispatch({ type: "IS_LOGGED_IN", payload: googleUser.isSignedIn() })
+      console.log({ googleUser })
     } catch (err) {
       onFailure(err)
     }
@@ -40,11 +42,12 @@ const Login = ({ classes }) => {
         Welcome!
       </Typography>
       <GoogleLogin
-        clientId="959120050162-hp1pi6dk1om9qrekspg4l9drh2q5cil5.apps.googleusercontent.com"
+        clientId="1038659111441-0qsqon64o0sqhejl2die1c9jm9vvvaab.apps.googleusercontent.com"
         onSuccess={onSuccess}
         onFailure={onFailure}
         isSignedIn={true}
         theme="dark"
+        buttonText="Login with Google"
       />
     </div>
   )
