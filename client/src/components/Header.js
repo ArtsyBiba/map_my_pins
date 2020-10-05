@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import MapIcon from "@material-ui/icons/Map";
+import ExploreIcon from '@material-ui/icons/Explore';
 import Typography from "@material-ui/core/Typography";
 
 import Signout from '../components/Auth/Signout';
@@ -18,7 +18,7 @@ const Header = ({ classes }) => {
         <Toolbar>
           {/* title / logo */}
           <div className={classes.grow}>
-            <MapIcon className={classes.icon} />
+            <ExploreIcon className={classes.icon} />
             <Typography
               component="h1"
               variant="h6"
@@ -66,7 +66,7 @@ const styles = theme => ({
   },
   icon: {
     marginRight: theme.spacing.unit,
-    color: "green",
+    color: "white",
     fontSize: 45
   },
   mobile: {
