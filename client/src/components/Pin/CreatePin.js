@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -9,24 +10,50 @@ import ClearIcon from '@material-ui/icons/Clear';
 import SaveIcon from '@material-ui/icons/SaveTwoTone';
 
 import Context from '../../context';
+import { useClient } from '../../client';
+import { CREATE_PIN_MUTATION } from '../../graphql/mutations';
 
 const CreatePin = ({ classes }) => {
-  const { dispatch } = useContext(Context)
-  const [title, setTitle] = useState("")
-  const [image, setImage] = useState("")
-  const [content, setContent] = useState("")
+  const { state, dispatch } = useContext(Context);
+  const client = useClient();
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+  const [content, setContent] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleDeleteDraft = () => {
     setTitle("")
     setImage("")
     setContent("")
     dispatch({ type: "DELETE_DRAFT" })
-  }
+  };
 
-  const handleSubmit = event => {
-    event.preventDefault()
-    console.log({ title, image, content })
-  }
+  const handleImageUpload = async () => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "map_my_pins");
+    data.append("cloud_name", "bjj-hub");
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/bjj-hub/image/upload",
+      data
+    );
+    return res.data.url
+  };
+
+  const handleSubmit = async event => {
+    try {
+      event.preventDefault();
+      setSubmitting(true);
+      const url = await handleImageUpload();
+      const { latitude, longitude } = state.draft;
+      const variables = { title, image: url, content, latitude, longitude };
+      await client.request(CREATE_PIN_MUTATION, variables);
+      handleDeleteDraft();
+    } catch (err) {
+      setSubmitting(false);
+      console.error("Error creating pin", err);
+    }
+  };
 
   return (
     <form className={classes.form}>
@@ -90,7 +117,7 @@ const CreatePin = ({ classes }) => {
           className={classes.button}
           variant="contained"
           color="secondary"
-          disabled={!title.trim() || !content.trim || !image}
+          disabled={!title.trim() || !content.trim || !image || submitting}
           onClick={handleSubmit}
         >
           Submit
