@@ -28,6 +28,10 @@ module.exports = {
             const pinAdded = await Pin.populate(newPin, "author");
             pubsub.publish(PIN_ADDED, { pinAdded });
             return pinAdded;
+        }),
+        deletePin: authenticated(async (root, args, ctx) => {
+            const pinDeleted = await Pin.findOneAndDelete({ _id: args.pinId }).exec();
+            return pinDeleted;
         })
     }
 };
