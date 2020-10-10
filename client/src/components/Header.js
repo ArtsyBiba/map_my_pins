@@ -9,74 +9,61 @@ import Signout from '../components/Auth/Signout';
 import Context from '../context';
 
 const Header = ({ classes }) => {
-  const { state } = useContext(Context)
-  const { currentUser } = state
+	const { state } = useContext(Context);
+	const { currentUser } = state;
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          {/* title / logo */}
-          <div className={classes.grow}>
-            <ExploreIcon className={classes.icon} />
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-            >
-              Map My Pins
-            </Typography>
-          </div>
+	return (
+		<div className={classes.root}>
+			<AppBar position="static">
+				<Toolbar>
+					{/* title / logo */}
+					<div className={classes.grow}>
+						<ExploreIcon className={classes.icon} />
+						<Typography component="h1" variant="h6" color="inherit" noWrap>
+							Map My Pins
+						</Typography>
+					</div>
 
-          {/* current user info */}
-          {currentUser && (
-            <div className={classes.grow}>
-              <img
-                className={classes.picture}
-                src={currentUser.picture}
-                alt={currentUser.name}
-              />
-              <Typography
-                variant="h5"
-                color="inherit"
-                noWrap
-              >
-                {currentUser.name}
-              </Typography>
-            </div>
-          )}
+					{/* current user info */}
+					{currentUser && (
+						<div className={classes.grow}>
+							<img className={classes.picture} src={currentUser.picture} alt={currentUser.name} />
+							<Typography variant="h6" color="inherit" noWrap>
+								{currentUser.name}
+							</Typography>
+						</div>
+					)}
 
-          {/* sign out button */}
-          <Signout />
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+					{/* sign out button */}
+					<Signout />
+				</Toolbar>
+			</AppBar>
+		</div>
+	);
 };
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1
-  },
-  grow: {
-    flexGrow: 1,
-    display: "flex",
-    alignItems: "center"
-  },
-  icon: {
-    marginRight: theme.spacing.unit,
-    color: "white",
-    fontSize: 45
-  },
-  mobile: {
-    display: "none"
-  },
-  picture: {
-    height: "50px",
-    borderRadius: "90%",
-    marginRight: theme.spacing.unit * 2
-  }
+const styles = (theme) => ({
+	root    : {
+		flexGrow : 1
+	},
+	grow    : {
+		flexGrow   : 1,
+		display    : 'flex',
+		alignItems : 'center'
+	},
+	icon    : {
+		marginRight : theme.spacing.unit,
+		color       : 'white',
+		fontSize    : 45
+	},
+	mobile  : {
+		display : 'none'
+	},
+	picture : {
+		height       : '40px',
+		borderRadius : '90%',
+		marginRight  : theme.spacing.unit * 2
+	}
 });
 
 export default withStyles(styles)(Header);
